@@ -127,9 +127,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_card"
+
             android:orientation="horizontal"
-            android:padding="14dp"
+
             android:gravity="center_vertical">
 
             <!-- Left: status + last sync -->
@@ -170,7 +170,7 @@
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:background="@drawable/bg_inner_card"
+                android:background="@drawable/bg_status_dexcom"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:padding="10dp"

@@ -8,16 +8,25 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.GridLayout
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
+
+    // For log meal data ------------------------------------------------------------------------------
+    private lateinit var etCarbs:  EditText
+    private lateinit var etProtein:   EditText
+    private lateinit var etFat:   EditText
+    private lateinit var btnLogMeal:  Button
 
     // For watch sensor data ------------------------------------------------------------------------------
     companion object {
@@ -35,6 +44,9 @@ class MainActivity : AppCompatActivity() {
 
     private var btSocket: BluetoothSocket? = null
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    // For glucose level data ------------------------------------------------------------------------------
+    // private lateinit var adapter: NotificationAdapter
 
     // For permissions ------------------------------------------------------------------------------
     private var permissionsGranted = false
@@ -55,6 +67,94 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initLogMealSection()
+        initWatchSensorSection()
+        initBloodGlucoseSection()
+    }
+
+    // For log meal data ------------------------------------------------------------------------------
+    private fun initLogMealSection() {
+        etCarbs    = findViewById(R.id.etCarbs)
+        etProtein  = findViewById(R.id.etProtein)
+        etFat      = findViewById(R.id.etFat)
+        btnLogMeal = findViewById(R.id.btnLogMeal)
+
+        btnLogMeal.setOnClickListener({ v ->
+            val carb = etCarbs.getText().toString().trim()
+            val protein = etProtein.getText().toString().trim()
+            val fat = etFat.getText().toString().trim()
+
+            // Validate inputs
+            if (carb.isEmpty() || protein.isEmpty() || fat.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Convert to float
+            val carbVal = carb.toFloat()
+            val proteinVal = protein.toFloat()
+            val fatVal = fat.toFloat()
+
+            // Show success toast
+            Toast.makeText(
+                this,
+                "Submitted! Carb: " + carbVal + "g, Protein: " + proteinVal + "g, Fat: " + fatVal + "g",
+                Toast.LENGTH_LONG
+            ).show()
+        })
+    }
+
+    // For glucose level data ------------------------------------------------------------------------------
+    private fun initBloodGlucoseSection() {
+        // Dexcom status
+        findViewById<TextView>(R.id.tvDexcomStatus).text = "● Connected to Dexcom G6 Pro"
+
+        // Blood glucose — latest 20 readings at 5-min intervals
+        val glucoseReadings = listOf(
+            "8:00" to 104, "8:05" to 107, "8:10" to 110, "8:15" to 115,
+            "8:20" to 119, "8:25" to 143, "8:30" to 151, "8:35" to 148,
+            "8:40" to 145, "8:45" to 138, "8:50" to 132, "8:55" to 127,
+            "9:00" to 122, "9:05" to 118, "9:10" to 116, "9:15" to 114,
+            "9:20" to 113, "9:25" to 111, "9:30" to 110, "9:35" to 112
+        )
+
+        val grid = findViewById<GridLayout>(R.id.glucoseGrid)
+        grid.removeAllViews()
+        grid.columnCount = 4
+
+        glucoseReadings.forEachIndexed { index, (time, value) ->
+            val isLatest = index == glucoseReadings.lastIndex
+            val isHigh   = value > 140
+
+            val cell = layoutInflater.inflate(R.layout.item_glucose_cell, grid, false)
+            cell.findViewById<TextView>(R.id.tvGlucoseTime).text  = time
+            cell.findViewById<TextView>(R.id.tvGlucoseValue).text = value.toString()
+
+            val bg = when {
+                isLatest -> R.drawable.bg_glucose_now
+                isHigh   -> R.drawable.bg_glucose_high
+                else     -> R.drawable.bg_glucose_normal
+            }
+            cell.setBackgroundResource(bg)
+
+            grid.addView(cell)
+        }
+
+//        adapter = NotificationAdapter(NotificationRepository.notifications)
+//
+//        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+//        recyclerView.layoutManager = LinearLayoutManager(this)
+//        recyclerView.adapter = adapter
+//
+//        NotificationRepository.listeners.add {
+//            runOnUiThread {
+//                adapter.updateData(NotificationRepository.notifications)
+//            }
+//        }
+    }
+
+    // For watch sensor data ------------------------------------------------------------------------------
+    private fun initWatchSensorSection() {
         tvStatus   = findViewById(R.id.tvStatus)
         tvHeart    = findViewById(R.id.tvHeart)
         tvSteps    = findViewById(R.id.tvSteps)
@@ -90,7 +190,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // For watch sensor data ------------------------------------------------------------------------------
     private fun connectToWatch() {
         setStatus("Scanning paired devices...")
         btnConnect.isEnabled = false

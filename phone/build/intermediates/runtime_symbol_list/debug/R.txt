@@ -3441,6 +3441,8 @@ int id tvAccelX 0x7f0801b6
 int id tvAccelY 0x7f0801b7
 int id tvAccelZ 0x7f0801b8
 int id tvDexcomStatus 0x7f0801b9
+int id tvGlucoseTime 0x7f0801d0
+int id tvGlucoseValue 0x7f0801d1
 int id tvHeart 0x7f0801ba
 int id tvLastSync 0x7f0801bb
 int id tvStatus 0x7f0801bc
@@ -3596,6 +3598,7 @@ int layout design_text_input_end_icon 0x7f0b002b
 int layout design_text_input_start_icon 0x7f0b002c
 int layout ime_base_split_test_activity 0x7f0b002d
 int layout ime_secondary_split_test_activity 0x7f0b002e
+int layout item_glucose_cell 0x7f0b006c
 int layout m3_alert_dialog 0x7f0b002f
 int layout m3_alert_dialog_actions 0x7f0b0030
 int layout m3_alert_dialog_title 0x7f0b0031

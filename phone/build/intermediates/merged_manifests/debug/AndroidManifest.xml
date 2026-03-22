@@ -37,6 +37,17 @@
             </intent-filter>
         </activity>
 
+        <!-- Register the listener service -->
+        <service
+            android:name="com.example.phonereceiver.MyNotificationListener"
+            android:exported="true"
+            android:label="Notification Listener"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" >
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="com.example.phonereceiver.androidx-startup"

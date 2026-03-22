@@ -23,11 +23,14 @@ id tvAccelX
 id tvAccelY
 id tvAccelZ
 id tvDexcomStatus
+id tvGlucoseTime
+id tvGlucoseValue
 id tvHeart
 id tvLastSync
 id tvStatus
 id tvSteps
 id tvSyncLabel
 layout activity_main
+layout item_glucose_cell
 string app_name
 style AppTheme

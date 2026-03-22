@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_columnWeight="1"
+    android:layout_margin="3dp"
+    android:background="@drawable/bg_glucose_normal"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="6dp">
+
+    <TextView
+        android:id="@+id/tvGlucoseTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="8:00"
+        android:textColor="#6B7280"
+        android:textSize="8sp" />
+
+    <TextView
+        android:id="@+id/tvGlucoseValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="104"
+        android:textColor="#E5E7EB"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

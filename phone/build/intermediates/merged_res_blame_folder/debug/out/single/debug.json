@@ -32,8 +32,8 @@
         "source": "C:\\Users\\yasin\\.gradle\\daemon\\8.4\\com.example.phonereceiver.phone-main-33:\\drawable\\bg_status_connected.xml"
     },
     {
-        "merged": "com.example.phonereceiver.phone-merged_res-31:/layout_activity_main.xml.flat",
-        "source": "com.example.phonereceiver.phone-main-33:/layout/activity_main.xml"
+        "merged": "com.example.phonereceiver.phone-merged_res-31:/layout_item_glucose_cell.xml.flat",
+        "source": "com.example.phonereceiver.phone-main-33:/layout/item_glucose_cell.xml"
     },
     {
         "merged": "C:\\Users\\yasin\\.gradle\\daemon\\8.4\\com.example.phonereceiver.phone-merged_res-31:\\drawable_bg_button_primary.xml.flat",
