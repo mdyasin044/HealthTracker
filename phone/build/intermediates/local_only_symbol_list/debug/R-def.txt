@@ -1,12 +1,33 @@
 R_DEF: Internal format may change without notice
 local
+drawable bg_button_primary
+drawable bg_card
+drawable bg_glucose_high
+drawable bg_glucose_normal
+drawable bg_glucose_now
+drawable bg_inner_card
+drawable bg_input
+drawable bg_status_connected
+drawable bg_status_dexcom
+drawable dot_high
+drawable dot_normal
+drawable dot_now
+drawable ic_sync
 id btnConnect
+id btnLogMeal
+id etCarbs
+id etFat
+id etProtein
+id glucoseGrid
 id tvAccelX
 id tvAccelY
 id tvAccelZ
+id tvDexcomStatus
 id tvHeart
+id tvLastSync
 id tvStatus
 id tvSteps
+id tvSyncLabel
 layout activity_main
 string app_name
 style AppTheme

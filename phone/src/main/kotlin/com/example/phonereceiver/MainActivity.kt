@@ -6,7 +6,9 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import java.util.UUID
 
 class MainActivity : AppCompatActivity() {
 
+    // For watch sensor data ------------------------------------------------------------------------------
     companion object {
         val APP_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     }
@@ -27,10 +30,13 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvAccelX:  TextView
     private lateinit var tvAccelY:  TextView
     private lateinit var tvAccelZ:  TextView
-    private lateinit var btnConnect: Button
+    private lateinit var tvLastSync: TextView
+    private lateinit var btnConnect: LinearLayout
 
     private var btSocket: BluetoothSocket? = null
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+
+    // For permissions ------------------------------------------------------------------------------
     private var permissionsGranted = false
 
     private val permissionLauncher = registerForActivityResult(
@@ -55,6 +61,7 @@ class MainActivity : AppCompatActivity() {
         tvAccelX   = findViewById(R.id.tvAccelX)
         tvAccelY   = findViewById(R.id.tvAccelY)
         tvAccelZ   = findViewById(R.id.tvAccelZ)
+        tvLastSync = findViewById(R.id.tvLastSync)
         btnConnect = findViewById(R.id.btnConnect)
 
         dimData(true)
@@ -72,12 +79,18 @@ class MainActivity : AppCompatActivity() {
             permissionLauncher.launch(missing.toTypedArray())
         }
 
+        // At the beginning, connect to the watch
+        if (permissionsGranted) connectToWatch()
+        else setStatus("Bluetooth permissions are required.")
+
+        // If connection failed or disconnected, connect to the watch again
         btnConnect.setOnClickListener {
             if (permissionsGranted) connectToWatch()
             else setStatus("Bluetooth permissions are required.")
         }
     }
 
+    // For watch sensor data ------------------------------------------------------------------------------
     private fun connectToWatch() {
         setStatus("Scanning paired devices...")
         btnConnect.isEnabled = false
@@ -117,19 +130,22 @@ class MainActivity : AppCompatActivity() {
             val reader = BufferedReader(InputStreamReader(btSocket?.inputStream))
             while (true) {
                 val line = reader.readLine() ?: break
+                Log.d("TAG_HEALTH", "Received: $line")
                 val parts = line.split(",")
-                if (parts.size == 5) {
+                if (parts.size == 6) {
                     val hr = parts[0].trim()
                     val st = parts[1].trim()
                     val ax = parts[2].trim().toFloatOrNull()?.let { "%.2f".format(it) } ?: "--"
                     val ay = parts[3].trim().toFloatOrNull()?.let { "%.2f".format(it) } ?: "--"
                     val az = parts[4].trim().toFloatOrNull()?.let { "%.2f".format(it) } ?: "--"
+                    val time = parts[5].trim()
                     withContext(Dispatchers.Main) {
                         tvHeart.text  = "$hr bpm"
                         tvSteps.text  = st
                         tvAccelX.text = "X: $ax"
                         tvAccelY.text = "Y: $ay"
                         tvAccelZ.text = "Z: $az"
+                        tvLastSync.text = "Last sync: $time"
                     }
                 }
             }

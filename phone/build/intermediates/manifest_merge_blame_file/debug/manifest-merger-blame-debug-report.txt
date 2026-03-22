@@ -37,7 +37,7 @@
 23-->[androidx.core:core:1.12.0] C:\Users\yasin\.gradle\caches\transforms-3\01be542a8a7642ecba403b94caa2bdf6\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 24        android:debuggable="true"
 25        android:extractNativeLibs="false"
-26        android:label="Watch Receiver"
+26        android:label="Health Tracker"
 26-->D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:10:9-39
 27        android:supportsRtl="true"
 27-->D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:11:9-35

@@ -13,6 +13,10 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.IBinder
+import android.util.Log
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
@@ -91,14 +95,22 @@ class SensorService : Service(), SensorEventListener {
         }
     }
 
+    fun getCurrentTime(): String {
+        val sdf = SimpleDateFormat("dd-MM-yyyy h:mm:ssa", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
     private suspend fun broadcastLoop() {
         while (coroutineContext.isActive) {
             delay(1000)
             val stream = outputStream ?: continue
             try {
-                val msg = "$heartRate,$steps,$accelX,$accelY,$accelZ\n"
+                val time = getCurrentTime()
+                val msg = "$heartRate,$steps,$accelX,$accelY,$accelZ,$time\n"
+                Log.d("TAG_HEALTH", "Sending: $msg")
                 stream.write(msg.toByteArray())
             } catch (e: Exception) {
+                Log.d("TAG_HEALTH", "Sending failed")
                 outputStream = null
                 clientSocket?.close()
                 scope.launch { acceptLoop() }
