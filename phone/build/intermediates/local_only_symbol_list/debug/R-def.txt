@@ -30,6 +30,7 @@ id tvLastSync
 id tvStatus
 id tvSteps
 id tvSyncLabel
+id tvToday
 layout activity_main
 layout item_glucose_cell
 string app_name

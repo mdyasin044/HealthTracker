@@ -3449,6 +3449,7 @@ id tvLastSync
 id tvStatus
 id tvSteps
 id tvSyncLabel
+id tvToday
 id unchecked
 id uniform
 id unlabeled

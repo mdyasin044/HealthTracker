@@ -4,8 +4,10 @@ import android.Manifest
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -19,6 +21,9 @@ import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.UUID
+import java.util.Locale
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     // For glucose level data ------------------------------------------------------------------------------
-    // private lateinit var adapter: NotificationAdapter
+    private lateinit var glucoseGrid: GridLayout
 
     // For permissions ------------------------------------------------------------------------------
     private var permissionsGranted = false
@@ -66,6 +71,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val today = SimpleDateFormat("EEEE, MMM dd", Locale.getDefault()).format(Date())
+        findViewById<TextView>(R.id.tvToday).text = today
 
         initLogMealSection()
         initWatchSensorSection()
@@ -106,28 +114,31 @@ class MainActivity : AppCompatActivity() {
 
     // For glucose level data ------------------------------------------------------------------------------
     private fun initBloodGlucoseSection() {
-        // Dexcom status
+        glucoseGrid = findViewById(R.id.glucoseGrid)
         findViewById<TextView>(R.id.tvDexcomStatus).text = "● Connected to Dexcom G6 Pro"
 
-        // Blood glucose — latest 20 readings at 5-min intervals
-        val glucoseReadings = listOf(
-            "8:00" to 104, "8:05" to 107, "8:10" to 110, "8:15" to 115,
-            "8:20" to 119, "8:25" to 143, "8:30" to 151, "8:35" to 148,
-            "8:40" to 145, "8:45" to 138, "8:50" to 132, "8:55" to 127,
-            "9:00" to 122, "9:05" to 118, "9:10" to 116, "9:15" to 114,
-            "9:20" to 113, "9:25" to 111, "9:30" to 110, "9:35" to 112
-        )
+        if(!checkNotificationListenerPermission()) {
+            startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        }
 
-        val grid = findViewById<GridLayout>(R.id.glucoseGrid)
-        grid.removeAllViews()
-        grid.columnCount = 4
+        NotificationRepository.listeners.add {
+            runOnUiThread {
+                updateGlucoseGrid(NotificationRepository.notifications)
+            }
+        }
+    }
 
-        glucoseReadings.forEachIndexed { index, (time, value) ->
+    private fun updateGlucoseGrid(glucoseReadings: List<NotificationItem>) {
+        glucoseGrid.removeAllViews()
+        glucoseGrid.columnCount = 4
+
+        glucoseReadings.forEachIndexed { index, item: NotificationItem ->
             val isLatest = index == glucoseReadings.lastIndex
+            val value = item.title.filter { it.isDigit() || it == '.' }.toInt()
             val isHigh   = value > 140
 
-            val cell = layoutInflater.inflate(R.layout.item_glucose_cell, grid, false)
-            cell.findViewById<TextView>(R.id.tvGlucoseTime).text  = time
+            val cell = layoutInflater.inflate(R.layout.item_glucose_cell, glucoseGrid, false)
+            cell.findViewById<TextView>(R.id.tvGlucoseTime).text  = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(item.timestamp))
             cell.findViewById<TextView>(R.id.tvGlucoseValue).text = value.toString()
 
             val bg = when {
@@ -137,20 +148,16 @@ class MainActivity : AppCompatActivity() {
             }
             cell.setBackgroundResource(bg)
 
-            grid.addView(cell)
+            glucoseGrid.addView(cell)
         }
+    }
 
-//        adapter = NotificationAdapter(NotificationRepository.notifications)
-//
-//        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-//        recyclerView.layoutManager = LinearLayoutManager(this)
-//        recyclerView.adapter = adapter
-//
-//        NotificationRepository.listeners.add {
-//            runOnUiThread {
-//                adapter.updateData(NotificationRepository.notifications)
-//            }
-//        }
+    private fun checkNotificationListenerPermission(): Boolean {
+        val enabled = Settings.Secure.getString(contentResolver, "enabled_notification_listeners")
+        if (enabled == null || !enabled.contains(packageName)) {
+            return false
+        }
+        return true
     }
 
     // For watch sensor data ------------------------------------------------------------------------------
@@ -213,7 +220,7 @@ class MainActivity : AppCompatActivity() {
                 btSocket?.close()
                 btSocket = watch.createRfcommSocketToServiceRecord(APP_UUID)
                 btSocket!!.connect()
-                updateStatus("Connected to ${watch.name} ✓")
+                updateStatus("Connected to ${watch.name}")
                 dimDataMain(false)
                 readLoop()
 

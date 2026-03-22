@@ -7,6 +7,9 @@ object NotificationRepository {
 
     fun add(item: NotificationItem) {
         _notifications.add(0, item) // newest first
+        if (_notifications.size > 20) { // Keep the latest 20 items
+            _notifications.removeAt(_notifications.lastIndex)
+        }
         listeners.forEach { it() }
     }
 

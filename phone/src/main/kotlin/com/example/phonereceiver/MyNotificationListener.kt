@@ -13,9 +13,20 @@ class MyNotificationListener : NotificationListenerService() {
         var title = extras.getString("android.title") ?: "No Title"
         var text = extras.getCharSequence("android.text")?.toString() ?: "No Content"
         val packageName = sbn.packageName
-
+        Log.d("TAG_HEALTH", "Notification received: $title, $text, $packageName")
         // Filter out other notifications
-        if (packageName != targetPackage) return
+        if (packageName != targetPackage) {
+            // For test purpose: send dummy data
+//            val notification = NotificationItem(
+//                title = "140 mg/dL",
+//                text = "",
+//                packageName = packageName,
+//                timestamp = sbn.postTime
+//            )
+//
+//            NotificationRepository.add(notification)
+            return
+        }
 
         // Extract title from customView
         if (title == "No Title" || text == "No Content") {
@@ -52,15 +63,15 @@ class MyNotificationListener : NotificationListenerService() {
                 // Walk all TextViews inside the custom view
                 val texts = mutableListOf<String>()
                 extractTextViews(view, texts)
-                Log.d("DexcomNotif", "Extracted texts: $texts")
+                Log.d("TAG_HEALTH", "Extracted texts: $texts")
                 val merged = texts.joinToString(" ")
                 return merged
             } catch (e: Exception) {
-                Log.e("DexcomNotif", "Failed to read custom view: ${e.message}")
+                Log.e("TAG_HEALTH", "Failed to read custom view: ${e.message}")
             }
         }
         else {
-            Log.e("DexcomNotif", "ContentView is null")
+            Log.e("TAG_HEALTH", "ContentView is null")
         }
         return ""
     }
