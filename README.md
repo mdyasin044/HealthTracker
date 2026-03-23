@@ -18,9 +18,7 @@ A comprehensive Android health monitoring app that integrates wearable devices a
 
 | Dashboard |
 |-----------|
-![f95c139f-2ef3-42ec-b71c-6fb4d7687daf](https://github.com/user-attachments/assets/b82951fd-3734-4853-a950-94304602cfc7)
-
-
+<img src="https://github.com/user-attachments/assets/07a3fb2b-52c2-47b0-b7e7-c8ad8496d40a" height="600" alt="App Screenshot"/>
 ---
 
 ## Supported Devices
