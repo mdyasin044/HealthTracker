@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import kotlin.random.Random
 
 class MyNotificationListener : NotificationListenerService() {
 
@@ -20,14 +21,15 @@ class MyNotificationListener : NotificationListenerService() {
         // Filter out other notifications
         if (packageName != targetPackage) {
             // For test purpose: send dummy data
-//            val notification = NotificationItem(
-//                title = "140 mg/dL",
-//                text = "",
-//                packageName = packageName,
-//                timestamp = sbn.postTime
-//            )
-//
-//            NotificationRepository.add(notification)
+            val randomNumber = Random.nextInt(60, 181)
+            val notification = NotificationItem(
+                title = "$randomNumber mg/dL",
+                text = "",
+                packageName = packageName,
+                timestamp = sbn.postTime
+            )
+
+            NotificationRepository.add(notification)
             return
         }
 

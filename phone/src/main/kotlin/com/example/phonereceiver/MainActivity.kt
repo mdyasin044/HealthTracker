@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         glucoseGrid.columnCount = 4
 
         glucoseReadings.forEachIndexed { index, item: NotificationItem ->
-            val isLatest = index == glucoseReadings.lastIndex
+            val isLatest = index == 0
             val value = item.title.filter { it.isDigit() || it == '.' }.toInt()
             val isHigh   = value > 140
 
