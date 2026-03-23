@@ -69,9 +69,9 @@ class SensorService : Service(), SensorEventListener {
             Sensor.TYPE_HEART_RATE   -> heartRate = event.values[0].toInt()
             Sensor.TYPE_STEP_COUNTER -> steps     = event.values[0].toInt()
             Sensor.TYPE_ACCELEROMETER -> {
-                accelX = event.values[0]
-                accelY = event.values[1]
-                accelZ = event.values[2]
+                accelX = String.format("%.2f", event.values[0]).toFloat()
+                accelY = String.format("%.2f", event.values[1]).toFloat()
+                accelZ = String.format("%.2f", event.values[2]).toFloat()
             }
         }
         liveData.postValue(SensorData(heartRate, steps, accelX, accelY, accelZ))

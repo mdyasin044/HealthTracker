@@ -1,4 +1,4 @@
-package com.example.phonereceiver
+package com.example.phonereceiver.notification
 object NotificationRepository {
     private val _notifications = mutableListOf<NotificationItem>()
     val notifications: List<NotificationItem> get() = _notifications.toList()

@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-35:12
-INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-35:12
-INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-35:12
-INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-35:12
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-36:12
+INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:1-36:12
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\yasin\.gradle\caches\transforms-3\c006c7e4abea24f449d8c80c9e056f58\transformed\material-1.11.0\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\yasin\.gradle\caches\transforms-3\fdf7cb61aa48a697a9df8fc1913e04bc\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\yasin\.gradle\caches\transforms-3\8aefc306e4f2131e366302b78cf98c23\transformed\constraintlayout-2.0.1\AndroidManifest.xml:2:1-11:12
@@ -53,21 +53,25 @@ MERGED from [androidx.print:print:1.0.0] C:\Users\yasin\.gradle\caches\transform
 		INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.INTERNET
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:4:5-66
+	android:name
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:4:22-64
 uses-permission#android.permission.BLUETOOTH
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:4:5-68
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:5:5-68
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:4:22-65
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:5:22-65
 uses-permission#android.permission.BLUETOOTH_CONNECT
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:5:5-76
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:6:5-76
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:5:22-73
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:6:22-73
 uses-permission#android.permission.BLUETOOTH_SCAN
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:6:5-73
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:7:5-73
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:6:22-70
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:7:22-70
 application
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:8:5-34:19
-INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:8:5-34:19
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:9:5-35:19
+INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:9:5-35:19
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\yasin\.gradle\caches\transforms-3\c006c7e4abea24f449d8c80c9e056f58\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\yasin\.gradle\caches\transforms-3\c006c7e4abea24f449d8c80c9e056f58\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.0.1] C:\Users\yasin\.gradle\caches\transforms-3\8aefc306e4f2131e366302b78cf98c23\transformed\constraintlayout-2.0.1\AndroidManifest.xml:9:5-20
@@ -89,45 +93,45 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\yasin\.gradle\cach
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\yasin\.gradle\caches\transforms-3\01be542a8a7642ecba403b94caa2bdf6\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:11:9-35
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:12:9-35
 	android:label
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:10:9-39
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:11:9-39
 	android:allowBackup
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:9:9-35
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:10:9-35
 	android:theme
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:12:9-40
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:13:9-40
 activity#com.example.phonereceiver.MainActivity
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:14:9-21:20
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:15:9-22:20
 	android:exported
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:16:13-36
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:17:13-36
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:15:13-41
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:16:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:17:13-20:29
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:18:13-21:29
 action#android.intent.action.MAIN
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:18:17-69
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:19:17-69
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:18:25-66
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:19:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:19:17-77
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:20:17-77
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:19:27-74
-service#com.example.phonereceiver.MyNotificationListener
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:24:9-32:19
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:20:27-74
+service#com.example.phonereceiver.notification.MyNotificationListener
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:25:9-33:19
 	android:label
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:26:13-50
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:27:13-50
 	android:exported
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:27:13-36
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:28:13-36
 	android:permission
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:28:13-87
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:29:13-87
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:25:13-51
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:26:13-64
 intent-filter#action:name:android.service.notification.NotificationListenerService
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:29:13-31:29
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:30:13-32:29
 action#android.service.notification.NotificationListenerService
-ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:30:17-98
+ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:31:17-98
 	android:name
-		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:30:25-96
+		ADDED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml:31:25-96
 uses-sdk
 INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\Hassan\WatchSensorProject\WatchSensorProject\phone\src\main\AndroidManifest.xml

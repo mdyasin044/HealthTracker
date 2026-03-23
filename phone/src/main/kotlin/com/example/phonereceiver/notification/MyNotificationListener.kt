@@ -1,8 +1,11 @@
-package com.example.phonereceiver
+package com.example.phonereceiver.notification
 
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 
 class MyNotificationListener : NotificationListenerService() {
 
@@ -76,11 +79,11 @@ class MyNotificationListener : NotificationListenerService() {
         return ""
     }
 
-    private fun extractTextViews(view: android.view.View, texts: MutableList<String>) {
-        if (view is android.widget.TextView) {
+    private fun extractTextViews(view: View, texts: MutableList<String>) {
+        if (view is TextView) {
             val text = view.text?.toString()
             if (!text.isNullOrBlank()) texts.add(text)
-        } else if (view is android.view.ViewGroup) {
+        } else if (view is ViewGroup) {
             for (i in 0 until view.childCount) {
                 extractTextViews(view.getChildAt(i), texts)
             }

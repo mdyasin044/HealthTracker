@@ -1,4 +1,4 @@
-package com.example.phonereceiver
+package com.example.phonereceiver.notification
 data class NotificationItem(
     val title: String,
     val text: String,

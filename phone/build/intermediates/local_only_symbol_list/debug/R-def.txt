@@ -15,10 +15,10 @@ drawable dot_now
 drawable ic_sync
 id btnConnect
 id btnLogMeal
-id etCarbs
-id etFat
-id etProtein
+id etAmount
+id etFood
 id glucoseGrid
+id progressBar
 id tvAccelX
 id tvAccelY
 id tvAccelZ
@@ -27,9 +27,9 @@ id tvGlucoseTime
 id tvGlucoseValue
 id tvHeart
 id tvLastSync
+id tvNutritionAmount
 id tvStatus
 id tvSteps
-id tvSyncLabel
 id tvToday
 layout activity_main
 layout item_glucose_cell

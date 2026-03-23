@@ -3157,9 +3157,8 @@ int id end 0x7f08009a
 int id endToStart 0x7f08009b
 int id enterAlways 0x7f08009c
 int id enterAlwaysCollapsed 0x7f08009d
-int id etCarbs 0x7f08009e
-int id etFat 0x7f08009f
-int id etProtein 0x7f0800a0
+int id etAmount 0x7f0801d3
+int id etFood 0x7f0801d4
 int id exitUntilCollapsed 0x7f0800a1
 int id expand_activities_button 0x7f0800a2
 int id expanded_menu 0x7f0800a3
@@ -3323,6 +3322,7 @@ int id pin 0x7f080140
 int id position 0x7f080141
 int id postLayout 0x7f080142
 int id pressed 0x7f080143
+int id progressBar 0x7f0801d5
 int id progress_circular 0x7f080144
 int id progress_horizontal 0x7f080145
 int id radio 0x7f080146
@@ -3445,9 +3445,9 @@ int id tvGlucoseTime 0x7f0801d0
 int id tvGlucoseValue 0x7f0801d1
 int id tvHeart 0x7f0801ba
 int id tvLastSync 0x7f0801bb
+int id tvNutritionAmount 0x7f0801d6
 int id tvStatus 0x7f0801bc
 int id tvSteps 0x7f0801bd
-int id tvSyncLabel 0x7f0801be
 int id tvToday 0x7f0801d2
 int id unchecked 0x7f0801bf
 int id uniform 0x7f0801c0

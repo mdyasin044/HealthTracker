@@ -17,6 +17,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.GridLayout
+import com.example.phonereceiver.notification.NotificationItem
+import com.example.phonereceiver.notification.NotificationRepository
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -24,14 +26,20 @@ import java.util.UUID
 import java.util.Locale
 import java.text.SimpleDateFormat
 import java.util.Date
+import android.widget.ProgressBar
+import android.view.View
+import androidx.lifecycle.lifecycleScope
+import com.example.phonereceiver.nutritionlog.GeminiService
 
 class MainActivity : AppCompatActivity() {
 
     // For log meal data ------------------------------------------------------------------------------
-    private lateinit var etCarbs:  EditText
-    private lateinit var etProtein:   EditText
-    private lateinit var etFat:   EditText
+
+    private lateinit var etFood: EditText
+    private lateinit var etAmount: EditText
     private lateinit var btnLogMeal:  Button
+    private lateinit var progressBar: ProgressBar
+    private lateinit var tvNutritionAmount: TextView
 
     // For watch sensor data ------------------------------------------------------------------------------
     companion object {
@@ -82,34 +90,42 @@ class MainActivity : AppCompatActivity() {
 
     // For log meal data ------------------------------------------------------------------------------
     private fun initLogMealSection() {
-        etCarbs    = findViewById(R.id.etCarbs)
-        etProtein  = findViewById(R.id.etProtein)
-        etFat      = findViewById(R.id.etFat)
+        etFood      = findViewById(R.id.etFood)
+        etAmount    = findViewById(R.id.etAmount)
         btnLogMeal = findViewById(R.id.btnLogMeal)
+        progressBar = findViewById(R.id.progressBar)
+        tvNutritionAmount   = findViewById(R.id.tvNutritionAmount)
 
-        btnLogMeal.setOnClickListener({ v ->
-            val carb = etCarbs.getText().toString().trim()
-            val protein = etProtein.getText().toString().trim()
-            val fat = etFat.getText().toString().trim()
+        btnLogMeal.setOnClickListener { analyze() }
+    }
+    private fun analyze() {
+        val food   = etFood.text.toString().trim()
+        val amount = etAmount.text.toString().trim()
 
-            // Validate inputs
-            if (carb.isEmpty() || protein.isEmpty() || fat.isEmpty()) {
-                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+        if (food.isEmpty() || amount.isEmpty()) {
+            Toast.makeText(this, "Please enter food and amount", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        setLoading(true)
+
+        lifecycleScope.launch {
+            try {
+                val result = GeminiService.getNutrition(food, amount)
+                tvNutritionAmount.text   = "Carbs: ${result.carbs}g, Protein: ${result.protein}g, Fat: ${result.fat}g"
+                tvNutritionAmount.visibility = View.VISIBLE
+            } catch (e: Exception) {
+                Toast.makeText(this@MainActivity, "Something went wrong", Toast.LENGTH_LONG).show()
+                Log.e("TAG_HEALTH", "Error: ${e.message}")
+            } finally {
+                setLoading(false)
             }
-
-            // Convert to float
-            val carbVal = carb.toFloat()
-            val proteinVal = protein.toFloat()
-            val fatVal = fat.toFloat()
-
-            // Show success toast
-            Toast.makeText(
-                this,
-                "Submitted! Carb: " + carbVal + "g, Protein: " + proteinVal + "g, Fat: " + fatVal + "g",
-                Toast.LENGTH_LONG
-            ).show()
-        })
+        }
+    }
+    private fun setLoading(loading: Boolean) {
+        progressBar.visibility = if (loading) View.VISIBLE else View.GONE
+        btnLogMeal.isEnabled   = !loading
+        tvNutritionAmount.visibility = if (!loading) View.VISIBLE else View.GONE
     }
 
     // For glucose level data ------------------------------------------------------------------------------
@@ -187,14 +203,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         // At the beginning, connect to the watch
-        if (permissionsGranted) connectToWatch()
-        else setStatus("Bluetooth permissions are required.")
+        tryConnectToWatch()
 
         // If connection failed or disconnected, connect to the watch again
         btnConnect.setOnClickListener {
-            if (permissionsGranted) connectToWatch()
-            else setStatus("Bluetooth permissions are required.")
+            tryConnectToWatch()
         }
+    }
+
+    private fun tryConnectToWatch() {
+        if (permissionsGranted) connectToWatch()
+        else setStatus("Bluetooth permissions are required.")
     }
 
     private fun connectToWatch() {
@@ -220,7 +239,7 @@ class MainActivity : AppCompatActivity() {
                 btSocket?.close()
                 btSocket = watch.createRfcommSocketToServiceRecord(APP_UUID)
                 btSocket!!.connect()
-                updateStatus("Connected to ${watch.name}")
+                updateStatus("● Connected to ${watch.name}")
                 dimDataMain(false)
                 readLoop()
 
@@ -235,10 +254,11 @@ class MainActivity : AppCompatActivity() {
         try {
             val reader = BufferedReader(InputStreamReader(btSocket?.inputStream))
             while (true) {
+                Log.d("TAG_HEALTH", "Reading starts...")
                 val line = reader.readLine() ?: break
                 Log.d("TAG_HEALTH", "Received: $line")
                 val parts = line.split(",")
-                if (parts.size == 6) {
+                if (parts.size >= 6) {
                     val hr = parts[0].trim()
                     val st = parts[1].trim()
                     val ax = parts[2].trim().toFloatOrNull()?.let { "%.2f".format(it) } ?: "--"
@@ -256,9 +276,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            updateStatus("Disconnected. Tap Connect to retry.")
+            updateStatus("Disconnected. Retrying...")
             dimDataMain(true)
             enableBtn()
+            tryConnectToWatch()
         }
     }
 
