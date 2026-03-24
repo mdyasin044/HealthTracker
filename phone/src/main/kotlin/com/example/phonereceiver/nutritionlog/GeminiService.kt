@@ -7,11 +7,12 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
+import com.example.phonereceiver.BuildConfig
 
 object GeminiService {
 
-    private const val API_KEY = "AIzaSyDU0rzjuS5K0auIhTmBs3OExKdeW5hj-Mg"
-    private const val ENDPOINT =
+    private val API_KEY = BuildConfig.GEMINI_API_KEY
+    private val ENDPOINT =
         "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=$API_KEY"
 
     suspend fun getNutrition(food: String, amount: String): NutritionResult =
