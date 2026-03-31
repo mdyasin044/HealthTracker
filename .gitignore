@@ -13,6 +13,7 @@ gradle/wrapper/gradle-wrapper.jar
 
 # App build outputs
 app/build/
+phone/build/
 
 # Native build
 .externalNativeBuild
