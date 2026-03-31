@@ -20,7 +20,7 @@ class MyNotificationListener : NotificationListenerService() {
         Log.d("TAG_HEALTH", "Notification received: $title, $text, $packageName")
         // Filter out other notifications
         if (packageName != targetPackage) {
-            // For test purpose: send dummy data
+            // For test purpose: send dummy data ------------------------
             val randomNumber = Random.nextInt(60, 181)
             val notification = NotificationItem(
                 title = "$randomNumber mg/dL",
@@ -30,11 +30,13 @@ class MyNotificationListener : NotificationListenerService() {
             )
 
             NotificationRepository.add(notification)
+            // For test purpose: send dummy data ------------------------
             return
         }
 
-        // Extract title from customView
+        // Filter out dexcom's other notifications
         if (title == "No Title" || text == "No Content") {
+            // Extract title from customView
             title = extractTitle(sbn)
             text = ""
         }

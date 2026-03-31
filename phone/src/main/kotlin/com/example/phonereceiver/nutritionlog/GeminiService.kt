@@ -41,6 +41,11 @@ object GeminiService {
                 outputStream.write(requestBody.toString().toByteArray())
             }
             Log.d("TAG_HEALTH", "connection created")
+            val responseCode = conn.responseCode
+            if (responseCode !in 200..299) {
+                val errorBody = conn.errorStream?.bufferedReader()?.readText() ?: "No error body"
+                throw Exception("Response error - $responseCode: $errorBody")
+            }
             val response = conn.inputStream.bufferedReader().readText()
             Log.d("TAG_HEALTH", "Response in JSON: $response")
             val content = JSONObject(response)

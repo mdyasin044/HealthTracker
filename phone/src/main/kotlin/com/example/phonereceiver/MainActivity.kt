@@ -34,7 +34,6 @@ import com.example.phonereceiver.nutritionlog.GeminiService
 class MainActivity : AppCompatActivity() {
 
     // For log meal data ------------------------------------------------------------------------------
-
     private lateinit var etFood: EditText
     private lateinit var etAmount: EditText
     private lateinit var btnLogMeal:  Button
