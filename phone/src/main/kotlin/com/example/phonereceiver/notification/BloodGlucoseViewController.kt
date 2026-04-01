@@ -15,8 +15,6 @@ class BloodGlucoseViewController(private val activity: AppCompatActivity) {
     private val glucoseGrid: GridLayout = activity.findViewById(R.id.glucoseGrid)
 
     init {
-        activity.findViewById<TextView>(R.id.tvDexcomStatus).text = "● Connected to Dexcom G6 Pro"
-
         if (!checkNotificationListenerPermission()) {
             activity.startActivity(Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS))
         }
