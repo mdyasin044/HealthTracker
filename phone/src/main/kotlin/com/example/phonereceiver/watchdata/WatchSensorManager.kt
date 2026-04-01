@@ -71,9 +71,16 @@ class WatchSensorManager(
                 }
             }
         } catch (e: Exception) {
-            onStatusChange("Disconnected. Retrying...")
-            onConnectionLost()
-            connect()
+            val btOn = BluetoothAdapter.getDefaultAdapter()?.isEnabled == true
+            if (btOn) {
+                onStatusChange("Disconnected. Retrying…")
+                delay(2000) // brief pause before retry
+                connect()
+            } else {
+                onStatusChange("Disconnected.")
+                onConnectionLost()
+                // Service's BroadcastReceiver will trigger reconnect when BT turns on
+            }
         }
     }
 

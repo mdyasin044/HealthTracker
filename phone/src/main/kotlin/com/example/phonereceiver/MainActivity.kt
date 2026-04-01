@@ -8,33 +8,32 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.phonereceiver.notification.BloodGlucoseViewController
 import com.example.phonereceiver.nutritionlog.LogMealViewController
-import com.example.phonereceiver.watchdata.WatchSensorManager
+import com.example.phonereceiver.watchdata.SensorLiveData
 import com.example.phonereceiver.watchdata.WatchSensorViewController
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.cancel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import android.content.Intent
+import com.example.phonereceiver.watchdata.WatchSensorService
 
 class MainActivity : AppCompatActivity() {
-    private val scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+    // Watch sensor UI
     private lateinit var watchView: WatchSensorViewController
-    private lateinit var watchManager: WatchSensorManager
 
-    private var permissionsGranted = false
+    // ── Permission launcher (Bluetooth) ───────────────────────────────────────
+
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { results ->
-        permissionsGranted = results.values.all { it }
-        if (permissionsGranted) {
-            watchView.setStatus("Permissions granted. Tap Connect.")
+        if (results.values.all { it }) {
+            startWatchService()
         } else {
-            watchView.setStatus("Permissions denied. No data available.")
+            watchView.setStatus("Bluetooth permissions denied — no sensor data.")
             watchView.dimData(true)
         }
     }
+
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,56 +51,51 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.tvToday).text = today
     }
 
-    // ── watch init ─────────────────────────────────────────────────────────────
+    override fun onDestroy() {
+        super.onDestroy()
+        // Service keeps running after Activity is destroyed — that's the point.
+        // Call stopService() only if you want to shut it down with the app.
+    }
+
+    // ── Watch sensor ──────────────────────────────────────────────────────────
 
     private fun initWatchSensorSection() {
         watchView = WatchSensorViewController(this)
-        watchManager = WatchSensorManager(
-            scope           = scope,
-            onStatusChange  = { msg -> runOnUiThread { watchView.setStatus(msg) } },
-            onDataReceived  = { data ->
-                watchView.setData(data)
-                watchView.dimData(false)
-            },
-            onConnectionLost = {
-                runOnUiThread {
-                    watchView.dimData(true)
-                    watchView.setConnectEnabled(true)
-                }
-            },
-        )
-
         watchView.dimData(true)
 
+        // "Connect" button now starts the service (or re-requests perms)
+        watchView.btnConnect.setOnClickListener { requestPermissionsAndStart() }
+
+        // Observe LiveData published by the background service
+        SensorLiveData.status.observe(this) { msg ->
+            watchView.setStatus(msg)
+        }
+        SensorLiveData.sensorData.observe(this) { data ->
+            watchView.setData(data)
+            watchView.dimData(false)
+        }
+
+        requestPermissionsAndStart()
+    }
+
+    private fun requestPermissionsAndStart() {
         val perms = arrayOf(
             Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.BLUETOOTH_SCAN,
         )
         val missing = perms.filter { checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED }
         if (missing.isEmpty()) {
-            permissionsGranted = true
-            watchView.setStatus("Tap Connect to find watch.")
-            watchManager.connect()
+            startWatchService()
         } else {
-            watchView.setStatus("Requesting Bluetooth permissions...")
+            watchView.setStatus("Requesting Bluetooth permissions…")
             permissionLauncher.launch(missing.toTypedArray())
-        }
-
-        watchView.btnConnect.setOnClickListener {
-            if (permissionsGranted) {
-                watchView.setConnectEnabled(false)
-                watchManager.connect()
-            } else {
-                watchView.setStatus("Bluetooth permissions are required.")
-            }
         }
     }
 
-    // ── Lifecycle ─────────────────────────────────────────────────────────────
-
-    override fun onDestroy() {
-        super.onDestroy()
-        scope.cancel()
-        watchManager.close()
+    private fun startWatchService() {
+        val intent = Intent(this, WatchSensorService::class.java)
+        startForegroundService(intent)
+        // Do NOT set status here — SensorLiveData already holds the current
+        // status from the service. Overwriting it would flash a stale message.
     }
 }
